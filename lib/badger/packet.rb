@@ -8,7 +8,7 @@ module Badger
     HEADER_SIZE = (1 + 4)
 
     # The minimum total size of a packet
-    MIN_SIZE = (HEADER_SIZE + 7)
+    MIN_SIZE = (HEADER_SIZE + 3)
 
     # The Badger Protocol version
     PROTOCOL_VERSION = 0x01
