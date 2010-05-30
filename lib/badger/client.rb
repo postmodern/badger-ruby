@@ -100,12 +100,15 @@ module Badger
       push [@request_id, Request::PROTOTYPE, service, name]
 
       payload = pull
+      arg_types = payload[2]
 
-      unless (payload[2].nil? || payload[2].kind_of?(Array))
+      if arg_types.kind_of?(Array)
+        arg_types.map! { |arg_type| arg_type.to_sym }
+      elsif arg_types
         raise(CorruptedPacket,"the received badger packet did not contain a nil or an Array of argument types",caller)
       end
 
-      return payload[2]
+      return arg_types
     end
 
     def call(service,name,*args)
