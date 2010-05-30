@@ -96,6 +96,18 @@ module Badger
       return payload[2]
     end
 
+    def prototype(service,name)
+      push [@request_id, Request::PROTOTYPE, service, name]
+
+      payload = pull
+
+      unless (payload[2].nil? || payload[2].kind_of?(Array))
+        raise(CorruptedPacket,"the received badger packet did not contain a nil or an Array of argument types",caller)
+      end
+
+      return payload[2]
+    end
+
     def call(service,name,*args)
       push [@request_id, Request::CALL, service, name, args]
 

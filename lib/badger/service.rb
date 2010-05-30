@@ -21,6 +21,10 @@ module Badger
       end
     end
 
+    def prototype(name)
+      @client.prototype(@name,name)
+    end
+
     def call(name,*args,&block)
       @client.call(@name,name,*args,&block)
     end
