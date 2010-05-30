@@ -106,6 +106,8 @@ module Badger
           yield payload[2] if block_given?
         when Response::RETURN
           return payload[2]
+        when Response::ERROR
+          raise(RuntimeError,payload[3],caller)
         end
       end
     end

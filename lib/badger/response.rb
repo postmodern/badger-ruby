@@ -5,5 +5,6 @@ module Badger
     FUNCTIONS = 0x43
     YIELD = 0x44
     RETURN = 0x45
+    ERROR = 0x46
   end
 end
