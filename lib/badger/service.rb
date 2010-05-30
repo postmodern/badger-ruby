@@ -17,6 +17,10 @@ module Badger
       @name.to_s
     end
 
+    def inspect
+      "#<#{self.class}:#{@name}>"
+    end
+
     protected
 
     def method_missing(name,*args)
