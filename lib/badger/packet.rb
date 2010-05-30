@@ -54,7 +54,11 @@ module Badger
       unpacker = FFI::MsgPack::Unpacker.create(packet.length - HEADER_SIZE)
       unpacker << packet[HEADER_SIZE..-1]
 
-      payload = unpacker.to_a
+      payload = unpacker.first
+
+      unless payload.kind_of?(Array)
+        raise(CorruptedPacket,"the received badger packet did not contain a MsgPack Array",caller)
+      end
 
       if payload.length < 2
         raise(CorruptedPacket,"the received badger packet had less then 2 fields",caller)
