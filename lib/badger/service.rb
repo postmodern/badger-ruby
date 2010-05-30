@@ -10,11 +10,11 @@ module Badger
     end
 
     def functions
-      client.functions(@name)
+      @client.functions(@name)
     end
 
     def call(name,*args)
-      client.call(@name,name,*args)
+      @client.call(@name,name,*args)
     end
 
     def to_s
