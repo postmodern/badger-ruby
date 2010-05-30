@@ -104,7 +104,7 @@ module Badger
 
         case payload[1]
         when Response::YIELD
-          yield payload[2] if block_given?
+          yield(*payload[2]) if block_given?
         when Response::RETURN
           return payload[2]
         when Response::ERROR
