@@ -13,6 +13,10 @@ module Badger
       client.call(@name,name,*args)
     end
 
+    def to_s
+      @name.to_s
+    end
+
     protected
 
     def method_missing(name,*args)
