@@ -13,6 +13,8 @@ module Badger
       :sys => Services::Sys
     }
 
+    attr_reader :uri
+
     def initialize
       @uri = nil
       @request_id = Request::ID_MIN
