@@ -22,7 +22,7 @@ module Badger
     end
 
     def inspect
-      "#<#{self.class}:#{@name}>"
+      "#<#{self.class}:#{@name} #{@client.uri}>"
     end
 
     protected
