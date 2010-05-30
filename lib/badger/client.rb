@@ -68,8 +68,9 @@ module Badger
 
       payload[2].each do |name|
         name = name.to_sym
+        server_class = (KNOWN_SERVICES[name] || Service)
 
-        @services[name] = Service.new(self,name)
+        @services[name] = service_class.new(self,name)
       end
 
       return @services
