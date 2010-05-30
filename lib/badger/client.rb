@@ -2,11 +2,16 @@ require 'badger/packet'
 require 'badger/request'
 require 'badger/response'
 require 'badger/service'
+require 'badger/services'
 
 require 'ffi-rzmq'
 
 module Badger
   class Client
+
+    KNOWN_SERVICES = {
+      :sys => Services::Sys
+    }
 
     def initialize
       @uri = nil
@@ -149,10 +154,16 @@ module Badger
 
     def method_missing(name,*args)
       if args.empty?
-        @services[name] ||= Service.new(self,name)
-      else
-        super(name,*args)
+        unless @services.has_key?(name)
+          service_class = (KNOWN_SERVICES[name] || Service)
+
+          @services[name] = service_class.new(self,name)
+        end
+
+        return @services[name]
       end
+
+      super(name,*args)
     end
 
   end
