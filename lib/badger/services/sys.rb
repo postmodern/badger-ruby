@@ -1,8 +1,8 @@
-require 'badger/service'
+require 'badger/known_service'
 
 module Badger
   module Services
-    class Sys < Service
+    class Sys < KnownService
 
       def time
         Time.at(call(:time))
