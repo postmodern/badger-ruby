@@ -48,7 +48,7 @@ module Badger
       return (t2 - t1)
     end
 
-    def services
+    def load_services
       push [@request_id, Request::SERVICES]
 
       payload = pull
@@ -57,7 +57,23 @@ module Badger
         raise(CorruptedPacket,"the received badger packet did not contain an Array of Service names",caller)
       end
 
-      return payload[2]
+      @services = {}
+
+      payload[2].each do |name|
+        name = name.to_sym
+
+        @services[name] = Service.new(self,name)
+      end
+
+      return @services
+    end
+
+    def services
+      if @services.empty?
+        load_services
+      else
+        @services
+      end
     end
 
     def functions(service)
