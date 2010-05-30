@@ -6,11 +6,19 @@ module Badger
 
     def initialize(client,name)
       @client = client
+
       @name = name.to_sym
+      @functions = []
     end
 
     def functions
-      @client.functions(@name)
+      if @functions.empty?
+        @functions = @client.functions(@name).map do |name|
+          name.to_sym
+        end
+      else
+        @functions
+      end
     end
 
     def call(name,*args,&block)
@@ -28,7 +36,11 @@ module Badger
     protected
 
     def method_missing(name,*args,&block)
-      call(name,*args,&block)
+      if functions.include?(name)
+        return call(name,*args,&block)
+      end
+
+      super(name,*args,&block)
     end
 
   end
