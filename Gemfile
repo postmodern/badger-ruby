@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 group :runtime do
+  gem 'digest-crc',	'~> 0.1.0', :git => 'git://github.com/postmodern/digest-crc.git'
   gem 'ffi-msgpack',	'~> 0.1.2'
   gem 'ffi-rzmq',	'~> 0.4.1', :git => 'git://github.com/chuckremes/ffi-rzmq.git'
 end

@@ -1,5 +1,6 @@
 require 'badger/exceptions/corrupted_packet'
 
+require 'digest/crc32'
 require 'ffi/msgpack'
 
 module Badger
@@ -27,7 +28,7 @@ module Badger
       claimed_checksum = packet[1...5].unpack('N').first
       packed_payload = packet[5..-1]
 
-      unless claimed_checksum == Packet.crc32(packed_payload)
+      unless claimed_checksum == Digest::CRC32.checksum(packed_payload)
         raise(CorruptedPacket,"the received badger packet had an invalid checksum",caller)
       end
 
@@ -36,7 +37,7 @@ module Badger
 
     def Packet.pack(payload)
       packed_payload = FFI::MsgPack.pack(payload)
-      checksum = Packet.crc32(packed_payload)
+      checksum = Digest::CRC32.checksum(packed_payload)
 
       packet = ''
 
@@ -50,11 +51,10 @@ module Badger
     def Packet.unpack(packet)
       Packet.validate(packet)
 
-      payload = FFI::MsgPack.unpack(packet[5..-1])
+      unpacker = FFI::MsgPack::Unpacker.create(packet.length - HEADER_SIZE)
+      unpacker << packet[HEADER_SIZE..-1]
 
-      unless payload.kind_of?(Array)
-        raise(CorruptedPacket,"the received badger packet did not contain a MsgPack Array",caller)
-      end
+      payload = unpacker.to_a
 
       if payload.length < 2
         raise(CorruptedPacket,"the received badger packet had less then 2 fields",caller)
@@ -63,26 +63,5 @@ module Badger
       return payload
     end
 
-    protected
-
-    #
-    # Calculates the CRC32 checksum of the packed payload.
-    #
-    # @param [String] packed_payload
-    #   The packed payload.
-    #
-    # @return [Integer]
-    #   The CRC32 checksum.
-    #
-    def Packet.crc32(packed_payload)
-      r = 0xffffffff
-
-      packed_payload.each_byte do |b|
-        r ^= b
-        8.times { r = ((r >> 1) ^ (0xEDB88320 * (r & 1))) }
-      end
-
-      return r ^ 0xffffffff
-    end
   end
 end
