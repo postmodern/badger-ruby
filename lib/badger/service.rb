@@ -13,8 +13,8 @@ module Badger
       @client.functions(@name)
     end
 
-    def call(name,*args)
-      @client.call(@name,name,*args)
+    def call(name,*args,&block)
+      @client.call(@name,name,*args,&block)
     end
 
     def to_s
@@ -27,8 +27,8 @@ module Badger
 
     protected
 
-    def method_missing(name,*args)
-      call(name,*args)
+    def method_missing(name,*args,&block)
+      call(name,*args,&block)
     end
 
   end

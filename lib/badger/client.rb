@@ -157,8 +157,8 @@ module Badger
       return Packet.unpack(packet)
     end
 
-    def method_missing(name,*args)
-      if args.empty?
+    def method_missing(name,*args,&block)
+      if (args.empty? && block.nil?)
         unless @services.has_key?(name)
           service_class = (KNOWN_SERVICES[name] || Service)
 
