@@ -159,13 +159,7 @@ module Badger
 
     def method_missing(name,*args,&block)
       if (args.empty? && block.nil?)
-        unless @services.has_key?(name)
-          service_class = (KNOWN_SERVICES[name] || Service)
-
-          @services[name] = service_class.new(self,name)
-        end
-
-        return @services[name]
+        return services[name] if services.has_key?(name)
       end
 
       super(name,*args)
