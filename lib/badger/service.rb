@@ -6,7 +6,7 @@ module Badger
 
     def initialize(client,name)
       @client = client
-      @name = name.to_s
+      @name = name.to_sym
     end
 
     def functions
