@@ -48,6 +48,30 @@ module Badger
       return (t2 - t1)
     end
 
+    def services
+      push [@request_id, Request::SERVICES]
+
+      payload = pull
+
+      unless payload[2].kind_of?(Array)
+        raise(CorruptedPacket,"the received badger packet did not contain an Array of Service names",caller)
+      end
+
+      return payload[2]
+    end
+
+    def functions(service)
+      push [@request_id, Request::FUNCTIONS, service]
+
+      payload = pull
+
+      unless payload[2].kind_of?(Array)
+        raise(CorruptedPacket,"the received badger packet did not contain an Array of Function names",caller)
+      end
+
+      return payload[2]
+    end
+
     def call(service,name,*args)
       push [@request_id, Request::CALL, service, name, args]
 

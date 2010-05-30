@@ -1,7 +1,9 @@
 module Badger
   module Response
     PONG = 0x41
-    YIELD = 0x42
-    RETURN = 0x43
+    SERVICES = 0x42
+    FUNCTIONS = 0x43
+    YIELD = 0x44
+    RETURN = 0x45
   end
 end

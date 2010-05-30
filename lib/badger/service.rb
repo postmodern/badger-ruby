@@ -9,6 +9,10 @@ module Badger
       @name = name.to_s
     end
 
+    def functions
+      client.functions(@name)
+    end
+
     def call(name,*args)
       client.call(@name,name,*args)
     end
