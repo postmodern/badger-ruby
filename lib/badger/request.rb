@@ -3,7 +3,7 @@ module Badger
     PING = 0x01
     SERVICES = 0x02
     FUNCTIONS = 0x03
-    CALL = 0x02
+    CALL = 0x04
 
     ID_MIN = 1
     ID_MAX = 4294967295
