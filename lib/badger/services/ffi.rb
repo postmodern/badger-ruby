@@ -37,6 +37,10 @@ module Badger
         return [args, ret.to_sym]
       end
 
+      def invoke(lib,name,*args)
+        call(:invoke,lib,name,args)
+      end
+
       def close(name)
         if call(:close,name)
           @libraries.delete(name)
