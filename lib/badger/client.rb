@@ -130,7 +130,7 @@ module Badger
         when Response::RETURN
           return payload[2]
         when Response::ERROR
-          raise(RuntimeError,payload[3],caller)
+          raise(RuntimeError,payload[2],caller)
         end
       end
     end
