@@ -10,7 +10,8 @@ module Badger
   class Client
 
     KNOWN_SERVICES = {
-      :sys => Services::Sys
+      :sys => Services::Sys,
+      :fs => Services::FS,
     }
 
     attr_reader :uri
