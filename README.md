@@ -10,6 +10,18 @@ badger-ruby is a Ruby client for communicating with Badger servers.
 
 ## Features
 
+* Provides a Client which can connect to or listen for connections
+  from servers.
+* Supports the following Services:
+  * sys
+  * fs
+  * ffi
+* Provides Ruby convenience classes which provide transparent access to
+  remote resources:
+  * {Badger::RemoteFile}
+  * {Badger::RemoteLibrary}
+  * {Badger::RemoteFunction}
+
 ## Requirements
 
 * [ffi-msgpack](http://github.com/postmodern/ffi-msgpack) ~> 0.1.2
