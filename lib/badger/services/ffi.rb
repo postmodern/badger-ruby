@@ -1,6 +1,5 @@
 require 'badger/known_service'
-
-require 'set'
+require 'badger/remote_library'
 
 module Badger
   module Services
@@ -9,13 +8,12 @@ module Badger
       def initialize(client,name)
         super(client,name)
 
-        @libraries = Set[]
+        @libraries = {}
       end
 
-      def open(name)
-        if call(:open,name)
-          @libraries << name
-          return true
+      def open(path)
+        if call(:open,path)
+          @libraries[path] ||= RemoteLibrary.new(self,path)
         end
       end
 
@@ -23,29 +21,15 @@ module Badger
         call(:libraries)
       end
 
-      def exposed_functions(name)
-        names = call(:exposed_functions,name)
-        names.map! { |name| name.to_sym }
-
-        return names
-      end
-
-      def exposed_function(lib,name)
-        args, ret = call(:exposed_function,lib,name)
-        args.map! { |name| name.to_sym }
-
-        return [args, ret.to_sym]
-      end
-
-      def invoke(lib,name,*args)
-        call(:invoke,lib,name,args)
-      end
-
-      def close(name)
-        if call(:close,name)
-          @libraries.delete(name)
+      def close(path)
+        if call(:close,path)
+          @libraries.delete(path)
           return true
         end
+      end
+
+      def [](path)
+        @libraries[path]
       end
 
     end
