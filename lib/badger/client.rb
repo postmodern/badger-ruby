@@ -12,6 +12,7 @@ module Badger
     KNOWN_SERVICES = {
       :sys => Services::Sys,
       :fs => Services::FS,
+      :ffi => Services::FFI
     }
 
     attr_reader :uri
