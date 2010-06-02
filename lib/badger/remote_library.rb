@@ -1,3 +1,5 @@
+require 'badger/remote_function'
+
 require 'set'
 
 module Badger
@@ -27,7 +29,10 @@ module Badger
     end
 
     def exposed_function(name)
-      @ffi.call(:exposed_function,@path,name)
+      name = name.to_sym
+      arg_types, ret_type = @ffi.call(:exposed_function,@path,name)
+
+      return RemoteFunction.new(self,name,arg_types,ret_type)
     end
 
     def invoke(name,*args)
