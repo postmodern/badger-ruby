@@ -3,7 +3,7 @@ module Badger
 
     SEEK_NAMES = {
       SEEK_SET => :set,
-      SEEK_CUR = > :current,
+      SEEK_CUR => :current,
       SEEK_END => :end
     }
 
