@@ -4,6 +4,9 @@ module Badger
     # Name of the service
     attr_reader :name
 
+    # The client that is providing the service
+    attr_reader :client
+
     def initialize(client,name)
       @client = client
 
