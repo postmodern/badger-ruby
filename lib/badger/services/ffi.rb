@@ -1,5 +1,6 @@
 require 'badger/known_service'
 require 'badger/remote_library'
+require 'badger/remote_pointer'
 
 module Badger
   module Services
@@ -19,6 +20,14 @@ module Badger
 
       def libraries
         call(:libraries)
+      end
+
+      def malloc(length)
+        RemotePointer.new(self,call(:malloc,length))
+      end
+
+      def free(ptr)
+        call(:free,ptr.to_i)
       end
 
       def close(path)
