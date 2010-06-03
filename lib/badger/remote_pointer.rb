@@ -1,3 +1,5 @@
+require 'enumerator'
+
 module Badger
   class RemotePointer
 
@@ -163,6 +165,9 @@ module Badger
       get_array_of_pointer(offset,1).first
     end
 
+    alias get_bytes get_array_of_uchar
+    alias get_byte get_uchar
+
     def put_array_of_char(offset,data)
       @ffi.call(:write,@address,:int,offset,data)
     end
@@ -314,6 +319,9 @@ module Badger
     def put_pointer(offset=0)
       put_array_of_pointer(offset,1)
     end
+
+    alias put_bytes put_array_of_uchar
+    alias put_byte put_uchar
 
     def to_i
       @address.to_i
