@@ -1,38 +1,37 @@
 require 'badger/remote_function'
 
-require 'set'
-
 module Badger
   class RemoteLibrary
 
     attr_reader :path
 
+    attr_reader :exposed_functions
+
     def initialize(ffi,path)
       @ffi = ffi
       @path = path
 
-      @exposed_functions = Set[]
+      @exposed_functions = {}
     end
 
     def attach_function(name,arg_types,ret_type)
+      name = name.to_sym
+      arg_types = arg_types.map { |name| name.to_sym }
+      ret_type = ret_type.to_sym
+
       if @ffi.call(:attach_function,@path,name,arg_types,ret_type)
-        @exposed_functions << name.to_sym
+        @exposed_functions[name] = RemoteFunction.new(self,name,arg_types,ret_type)
       end
-    end
-
-    def exposed_functions
-      functions = @ffi.call(:exposed_functions,@path)
-      functions.map! { |name| name.to_sym }
-
-      @exposed_functions += functions
-      return @exposed_functions
     end
 
     def exposed_function(name)
       name = name.to_sym
-      arg_types, ret_type = @ffi.call(:exposed_function,@path,name)
 
-      return RemoteFunction.new(self,name,arg_types,ret_type)
+      unless @exposed_functions.has_key?(name)
+        raise(RuntimeError,"exposed function not found #{name}",caller)
+      end
+
+      return @exposed_functions[name]
     end
 
     def invoke(name,*args)
@@ -51,8 +50,10 @@ module Badger
 
     def method_missing(name,*args,&block)
       if block.nil?
-        invoke(name,*args)
+        return invoke(name,*args) if @exposed_functions.has_key?(name)
       end
+
+      return super(name,*args,&block)
     end
 
   end
