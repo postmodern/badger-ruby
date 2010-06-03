@@ -323,6 +323,10 @@ module Badger
     alias put_bytes put_array_of_uchar
     alias put_byte put_uchar
 
+    def free
+      @ffi.free(@address)
+    end
+
     def to_i
       @address.to_i
     end
